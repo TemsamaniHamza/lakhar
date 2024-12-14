@@ -37,7 +37,7 @@ s_input	*shunting_yard(s_input **input)
 	return (new_stack);
 }
 
-void	push(s_input **a_input, s_input **b_input, int flg)
+void	push(s_input **a_input, s_input **b_input, int flag)
 {
 	s_input	*sep;
 
@@ -48,7 +48,7 @@ void	push(s_input **a_input, s_input **b_input, int flg)
 	sep->right = NULL;
 	if (*a_input)
 		(*a_input)->left = NULL;
-	if (flg == 1)
+	if (flag == 1)
 		push_2(b_input, sep);
 	else
 		build_command_list(b_input, sep);

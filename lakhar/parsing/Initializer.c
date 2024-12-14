@@ -6,20 +6,56 @@ void    save_input_output(int *fd_input, int *fd_output)
     *fd_output = dup(1);
 }
 
+s_env	*node_creation_env(char *env, char *var, char *value)
+{
+	s_env	*node;
+
+	node = malloc(sizeof(s_env));
+	if (!node)
+		exit(1);
+	node->env = env;
+	node->var = var;
+	node->value = value;
+	node->next = NULL;
+	return (node);
+}
+int	find_char(char *s, char c)
+{
+	int	i;
+
+	i = 0;
+	if (!s)
+		return (0);
+	while (*s)
+	{
+		if (*s == c)
+			return (i);
+		s++;
+		i++;
+	}
+	return (-1);
+}
+
+
 void ft_initialize_env(char **env)
 {
     int i; 
+
     i = 0;
+    if(!env)
+        return;
     while(env[i])
         i++;
-    global.env = malloc(sizeof(char *) * (i + 1));
-    if(!global.env)
-        return;
-    i = 0;
+
     while(env[i])
     {
-        global.env[i] = ft_strdup(env[i]);
-        i++;
+        i = find_char(*env, '=');
+        ft_lstadd_back(&global.env, node_creation_env(ft_strdup(*env),
+				ft_substr(*env, 0, i), ft_substr(*env, i + 1,
+					ft_strlen(*env) - i)));
+        if(global.exited)
+            return; // free env
+        env++;
     }
 }
 

@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_back_bonus.c                             :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: htemsama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: rboulaga <rboulaga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/19 01:15:00 by htemsama          #+#    #+#             */
-/*   Updated: 2023/11/19 01:15:01 by htemsama         ###   ########.fr       */
+/*   Created: 2024/10/18 16:47:28 by rabie             #+#    #+#             */
+/*   Updated: 2024/10/20 12:36:08 by rboulaga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../headers/minishell.h"
 
-void	ft_lstadd_back(t_list **lst, t_list *new)
+int    pwd()
 {
-	t_list	*bullst;
+    char buff[PATH_MAX];
 
-	if (!new || !lst)
-		return ;
-	bullst = *lst;
-	if (bullst)
-	{
-		while (bullst->next)
-			bullst = bullst->next;
-		bullst->next = new;
-	}
-	else
-		*lst = new;
+    getcwd(buff, sizeof(buff));
+    printf("%s\n", buff);
+    return 0;
 }
+
+
+
+// one possible error is if the current directory has been deleted or unmounted.
+

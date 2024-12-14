@@ -65,12 +65,12 @@ int check_next_quote(char *s, char c)
 	return -1;
 }
 
-void check_flg(int flg, char *s, int *k)
+void check_flag(int flag, char *s, int *k)
 {
-	if(!flg)
+	if(!flag)
 		s[(*k) - 1] = 127;
 }
-char	*cmd_help(char *s, int l, int *k, int flg)
+char	*cmd_help(char *s, int l, int *k, int flag)
 {
 	int	i;
 	int	j;
@@ -88,32 +88,32 @@ char	*cmd_help(char *s, int l, int *k, int flg)
 			while (i < j)
 			{
 				ret[i++] = s[(*k)++];
-				check_flg(flg, s, k);
+				check_flag(flag, s, k);
 			}
 		}
 		if (s[*k] == 32)
 			s[*k] = 127;
 		ret[i++] = s[(*k)++];
-		check_flg(flg, s, k);
+		check_flag(flag, s, k);
 	}
 	return (ret[i] = 0, ret);
 }
 
-char **fill_command(char *s, int l, int *k, int flg)
+char **fill_command(char *s, int l, int *k, int flag)
 {
 	char *prep;
 	char **freturn;
 
 	if(l<0)
 		return(NULL);
-	prep = cmd_help(s, l, k, flg);
+	prep = cmd_help(s, l, k, flag);
 	freturn = ft_split(prep, 127);
 	free(prep);
 	prep = NULL;
 	return (freturn);
 }
 
-char **prep_cmd(char *s, int *i, s_token tok, int flg)
+char **prep_cmd(char *s, int *i, s_token tok, int flag)
 {
 	char **freturn;
 	s[*i] = 127;
@@ -127,24 +127,24 @@ char **prep_cmd(char *s, int *i, s_token tok, int flg)
 		(*i)++;
 	if(check_syntax(tok, &s[*i]) == 0)
 		return NULL;
-	freturn = fill_command(s, str_len(s, *i, flg), i, flg);
+	freturn = fill_command(s, str_len(s, *i, flag), i, flag);
 	return (freturn);
 }
 
-int	choose_str(char c, int flg)
+int	choose_str(char c, int flag)
 {
-	if ((flg && return_token(c, 0) == STR) || (!flg && return_token(c, 0) == STR && !check_spaces(c)))
+	if ((flag && return_token(c, 0) == STR) || (!flag && return_token(c, 0) == STR && !check_spaces(c)))
 		return (1);
 	else
 		return (0);
 }
-int str_len(char *s, int i, int flg)
+int str_len(char *s, int i, int flag)
 {
 	int l;
 	int keep;
 
 	l = 0;
-	while(s[i] && choose_str(s[i], flg))
+	while(s[i] && choose_str(s[i], flag))
 	{
 		if(s[i] == 34 || s[i] == 39)
 		{
@@ -157,7 +157,7 @@ int str_len(char *s, int i, int flg)
 		l++;
 		i++;
 	}
-	if (!flg)
+	if (!flag)
 	{
 		while (check_spaces(s[i++]))
 			l++;
@@ -184,7 +184,7 @@ s_redir	*node_create_redirection(char **s, s_token tok)
 		exit(1);
 	node->tok = tok;
 	node->file = s[0];
-	node->flg = 1;
+	node->flag = 1;
 	node->left = NULL;
 	node->right = NULL;
 	free(s);

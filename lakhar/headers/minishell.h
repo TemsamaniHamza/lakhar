@@ -8,6 +8,9 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft_torename/libft.h"
+#include <limits.h>
+#include <sys/wait.h>
+
 
 typedef enum t_token
 {
@@ -28,7 +31,7 @@ typedef struct t_redir
 {
 	s_token			tok;
 	char			*file;
-	int				flg;
+	int				flag;
 	int				fd;
 	struct t_redir	*left;
 	struct t_redir	*right;
@@ -50,12 +53,12 @@ typedef struct t_env
 	char 			*env;
 	char			*var;
 	char			*value;
-	struct s_env	*next;
+	struct t_env	*next;
 }	s_env;
 
 typedef struct t_global
 {
-	char 			**env;
+	s_env 			*env;
 	int 			executed;
 	int 			exited;
 }	s_global;
@@ -86,7 +89,7 @@ int	build_command_list(s_input **head, s_input *add);
 s_input	*list_to_tree(s_input *root);
 void	remove_top(s_input **tok_s);
 void	push_2(s_input **top, s_input *to_add);
-void	push(s_input **a_input, s_input **b_input, int flg);
+void	push(s_input **a_input, s_input **b_input, int flag);
 s_input	*shunting_yard(s_input **input);
 void	the_shunting_yard(s_input **input, s_input **tok_stack, s_input **new_stack);
 int token_1(s_input **head, char *s, int *i, int *par);
@@ -97,12 +100,12 @@ int	check_rpr(char *s, int i);
 int	check_not_operator(s_token tok);
 int	check_command(s_token tok);
 void	incre(char *s, int *i);
-int str_len(char *s, int i, int flg);
-int	choose_str(char c, int flg);
-char **prep_cmd(char *s, int *i, s_token tok, int flg);
-char **fill_command(char *s, int l, int *k, int flg);
-char	*cmd_help(char *s, int l, int *k, int flg);
-void check_flg(int flg, char *s, int *k);
+int str_len(char *s, int i, int flag);
+int	choose_str(char c, int flag);
+char **prep_cmd(char *s, int *i, s_token tok, int flag);
+char **fill_command(char *s, int l, int *k, int flag);
+char	*cmd_help(char *s, int l, int *k, int flag);
+void check_flag(int flag, char *s, int *k);
 int check_next_quote(char *s, char c);
 int	check_syntax(s_token tok, char *s);
 int build_redir_list(s_redir **head, s_redir *add);
@@ -110,10 +113,46 @@ int	check_true(s_token tok);
 s_redir	*node_create_redirection(char **s, s_token tok);
 void ft_execute(s_input *input);
 void exec_str(s_input *input);
-char **expand(char *command);
+int    expand(s_input *input);
+char *expand_var(char *str, int *i);
 char **parsing_cmd(char *str);
 int find_len(char *str);
 int look_for_1_quote(char *str, int *i, char c);
+int length_val(char *str, int *i);
+char *ft_getenv(char *s);
+int is_legit(int c);
+char *parsing_redirection(s_redir *redir, char *str ,int *flag);
+void   fill_between_quote_2(char **str, char *s, int *i);
+void	fill_between_quote_2_help(char **str, int *i, char *s);
+void    ft_change_command(char *command, char *str);
+void	change_val(char **keep, char *s, int *i);
+void    fill_between_quote_1(char **str, char *s, int *i);
+int    builtins(char **cmd);
+int		cd(char **cmd);
+void    free_list(char **str);
+int     help(char **cmd, s_global *global);
+int     find_path(char **cmd, s_global *global);
+int     cmd_execution(char **cmd, s_global *global);
+int check_option(char *str);
+void    echo(char **cmd);
+int     env(char **cmd);
+int     join_var(char *var, s_global *global);
+int     putstr(char *str);
+void    sort_list(s_global *global, int len);
+void    copying_II(s_global *global, char *v);
+int     var_parser(char *v, s_global *global);
+int check_variable(char *var ,s_global *global);
+int     export_listing(char **cmd, s_global *global);
+int     export(char **cmd);
+int     single_pipe(s_input *input, s_global *global);
+int     exe(char **cmd ,s_input *input, s_global *global);
+int    pwd();
+int     redirections(s_input *input, s_global *global);
+int	env_cmp(const char *str1, const char *str2);
+int     strcount(char **cmd);
+int     unset(char **cmd);
+int	ft_ncmp(const char *str1, const char *str2, int n);
+int	find_char(char *s, char c);
 
 
 #endif
