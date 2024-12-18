@@ -26,8 +26,8 @@ int    builtins(char **cmd)
         return(unset(cmd), 1);
     else if (ft_ncmp("export", cmd[0], 6) == 0 && ft_strlen(cmd[0]) == 6)
         return(export(cmd), 1);
-    // else
-    //     cmd_execution(cmd, global);
+    else
+        cmd_execution(cmd);
     free_list(cmd);
     return 0;
 }

@@ -3,26 +3,33 @@
 s_token	return_token(char c1, char c2)
 {
 	if (c1 == '|' && c2 == '|')
+	{
+		printf("the c2 dzb is :%c\n", c2);
 		return (OR);
-	if (c1 == '&' && c2 == '&')
+	}
+	else if (c1 == '&' && c2 == '&')
+	{
+		printf("the c2 dzb is : %c\n", c2);
 		return (AND);
-	if (c1 == '<' && c2 == '<')
+	}
+	else if (c1 == '<' && c2 == '<')
 		return (HEREDOC);
-	if (c1 == '>' && c2 == '>')
+	else if (c1 == '>' && c2 == '>')
 		return (APPEND);
-	if (c1 == '(')
+	else if (c1 == '(')
 		return (LPR);
-	if (c1 == ')')
+	else if (c1 == ')')
 		return (RPR);
-	if (c1 == '|')
+	else if (c1 == '|')
 		return (PIPE);
-	if (c1 == '>')
+	else if (c1 == '>')
 		return (OUT);
-	if (c1 == '<')
+	else if (c1 == '<')
 		return (IN);
-	if (!c1)
+	else if (!c1)
 		return (END);
-	return (STR);
+	else
+		return (STR);
 }
 
 s_input	*node_creation_cmd(char *s, s_redir *redir, s_token tok, int token_flag)

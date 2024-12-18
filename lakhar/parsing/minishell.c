@@ -22,7 +22,12 @@ int main(int argc, char **argv, char **env)
         global.executed = 1;
         add_history(rl);
         input = ft_parse(rl);
+        // printf("%d\n", input->tok);
+        // exit(1);
+        if(input == NULL)
+            exit(1);
         ft_execute(input);
+        global.executed = 0;
     }
 	return 0;
 }

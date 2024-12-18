@@ -17,7 +17,7 @@ void ft_execute(s_input *input)
 
 void exec_and(s_input *input)
 {
-    printf("%d", global.exited);
+    // printf("%d", input->tok);
     ft_execute(input->left);
     if(global.exited == 0)
         ft_execute(input->right);

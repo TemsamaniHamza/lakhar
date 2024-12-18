@@ -133,6 +133,7 @@ char **prep_cmd(char *s, int *i, s_token tok, int flag)
 
 int	choose_str(char c, int flag)
 {
+
 	if ((flag && return_token(c, 0) == STR) || (!flag && return_token(c, 0) == STR && !check_spaces(c)))
 		return (1);
 	else
@@ -197,7 +198,7 @@ s_input	*token_2(char *s ,int *i ,s_token tok)
     int save;
 	char *str;
 	s_redir *redir;
-
+	int j = 0;
 	save = *i;
 	redir = NULL;
 	while(check_true(tok) == 1)
@@ -210,6 +211,8 @@ s_input	*token_2(char *s ,int *i ,s_token tok)
 		else
 			save++;
 		tok = return_token(s[save], s[save + 1]);
+		j++;
+		// printf("token awedi %d and j = [%d]\n",tok, j);
 	}
 	save = str_len(s, *i, 1);
 	if(save<0)
