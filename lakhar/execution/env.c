@@ -12,20 +12,26 @@
 
 #include "../headers/minishell.h"
 
-void ft_env()
+int     env(char **cmd)
 {
-    s_env *tmp;
+    int i;
+    // int j = 0;
+    // while (global->env_copy[j])
+    //     j++;
+    // printf("%d\n\n", j);
     
-    tmp = global.env;
-    while(tmp)
+    i = 0;
+    if (cmd[1])
     {
-        if (find_char(tmp->env, '=') == -1)
-        {
-            tmp = tmp->next;
-        }
-        printf("%s\n",tmp->env);
-        tmp = tmp->next;
+        printf("env: ‘%s’: No such file or directory\n", cmd[1]);
+        return 1;
     }
-    global.exited = 0;
+    while (global.env_copy[i])
+    {
+        if (ft_strchr(global.env_copy[i], '=') != NULL)
+            printf("%s\n", global.env_copy[i]);
+        i++;
+    }
+    return (0);
 }
 // ‘%s’ check if there is any problem

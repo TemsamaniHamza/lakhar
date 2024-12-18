@@ -12,7 +12,8 @@
 
 #include "../headers/minishell.h"
 
-int     redirections(s_input *input, s_global *global)
+
+int     redirections(s_input *input)
 {
     printf(">dsf s dfsdfsdfsd\n");
     

@@ -12,12 +12,13 @@
 
 #include "../headers/minishell.h"
 
+
 // void    left_child(s_input *input, s_global *global, int *pipefd)
 // {
     
 // }
 
-int     single_pipe(s_input *input, s_global *global)
+int     single_pipe(s_input *input)
 {
     char **tmp1;
     char **tmp2;
@@ -32,7 +33,7 @@ int     single_pipe(s_input *input, s_global *global)
         close(pipefd[1]);
         
         if (input->left->tok == PIPE)
-            single_pipe(input->left, global);    
+            single_pipe(input->left);    
         if (input->left->command)
         {
             tmp1 = ft_split(input->left->command, ' ');    
@@ -57,11 +58,11 @@ int     single_pipe(s_input *input, s_global *global)
     waitpid(right, NULL, 0);   
     return 0;
 }   
-int     exe(char **cmd ,s_input *input, s_global *global)
+int     exe(char **cmd ,s_input *input)
 {
     
     if (input->tok == PIPE)
-        single_pipe(input, global);
+        single_pipe(input);
     else if (input->tok == STR)
         builtins(cmd);
     // else if (input->tok == IN || input->tok == OUT)

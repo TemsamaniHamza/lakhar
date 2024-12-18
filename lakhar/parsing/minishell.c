@@ -13,7 +13,7 @@ int main(int argc, char **argv, char **env)
     int i = 0;
     s_input *input;
 
-    ft_initialize(env, &fd_input, &fd_output); // intialize the global struct(env , input and output, executing or ended)
+    ft_initialize(env, &fd_input, &fd_output); 
     while(1)
     {
         rl = readline("minishell --> ");

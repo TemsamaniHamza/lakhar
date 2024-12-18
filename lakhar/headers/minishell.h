@@ -48,17 +48,21 @@ typedef struct t_input
 	s_redir			*redirections;
 }   s_input;
 
-typedef struct t_env
-{
-	char 			*env;
-	char			*var;
-	char			*value;
-	struct t_env	*next;
-}	s_env;
+// typedef struct t_env
+// {
+// 	char 			*env;
+// 	char			*var;
+// 	char			*value;
+// 	struct t_env	*next;
+// }	s_env;
 
 typedef struct t_global
 {
-	s_env 			*env;
+	// s_env 			*env;
+	char			**env_copy;
+	char			*path;
+	int				status;
+	int				wall;
 	int 			executed;
 	int 			exited;
 }	s_global;
@@ -69,7 +73,7 @@ extern s_global global;
 
 
 
-
+void exec_and(s_input *input);
 void    ft_initialize(char **env, int *fd_input, int *fd_output);
 void ft_initialize_env(char **env);
 void    save_input_output(int *fd_input, int *fd_output);
@@ -130,24 +134,24 @@ void    fill_between_quote_1(char **str, char *s, int *i);
 int    builtins(char **cmd);
 int		cd(char **cmd);
 void    free_list(char **str);
-int     help(char **cmd, s_global *global);
-int     find_path(char **cmd, s_global *global);
-int     cmd_execution(char **cmd, s_global *global);
+int     help(char **cmd);
+int     find_path(char **cmd);
+int     cmd_execution(char **cmd);
 int check_option(char *str);
 void    echo(char **cmd);
 int     env(char **cmd);
-int     join_var(char *var, s_global *global);
+int     join_var(char *var);
 int     putstr(char *str);
-void    sort_list(s_global *global, int len);
-void    copying_II(s_global *global, char *v);
-int     var_parser(char *v, s_global *global);
-int check_variable(char *var ,s_global *global);
-int     export_listing(char **cmd, s_global *global);
+void    sort_list(int len);
+void    copying_II(char *v);
+int     var_parser(char *v);
+int check_variable(char *var);
+int     export_listing(char **cmd);
 int     export(char **cmd);
-int     single_pipe(s_input *input, s_global *global);
-int     exe(char **cmd ,s_input *input, s_global *global);
+int     single_pipe(s_input *input);
+int     exe(char **cmd ,s_input *input);
 int    pwd();
-int     redirections(s_input *input, s_global *global);
+int     redirections(s_input *input);
 int	env_cmp(const char *str1, const char *str2);
 int     strcount(char **cmd);
 int     unset(char **cmd);

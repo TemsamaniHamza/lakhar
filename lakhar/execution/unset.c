@@ -12,6 +12,7 @@
 
 #include "../headers/minishell.h"
 
+
 int	env_cmp(const char *str1, const char *str2)
 {
 	int	i;
@@ -52,19 +53,19 @@ int     unset(char **cmd)
         return 1;
     while (cmd[i])
     {
-        while (global->env_copy[j])
+        while (global.env_copy[j])
         {        
-            if(env_cmp(cmd[i], global->env_copy[j])) 
+            if(env_cmp(cmd[i], global.env_copy[j])) 
             {
-                free(global->env_copy[j]);
-                global->env_copy[j] = NULL;
-                while (global->env_copy[j + 1])
+                free(global.env_copy[j]);
+                global.env_copy[j] = NULL;
+                while (global.env_copy[j + 1])
                 {
-                    if (global->env_copy[j + 1])
-                        global->env_copy[j] = global->env_copy[j + 1];
+                    if (global.env_copy[j + 1])
+                        global.env_copy[j] = global.env_copy[j + 1];
                     j++;
                 }
-                global->env_copy[j] = NULL;
+                global.env_copy[j] = NULL;
                 // free(global->env_copy);
             }
             j++;

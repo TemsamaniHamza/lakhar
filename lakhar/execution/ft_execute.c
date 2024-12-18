@@ -4,8 +4,8 @@ void ft_execute(s_input *input)
 {
     if(!input)
         return;
-    // else if(input->tok == AND)
-    //     return(exec_and(input));
+    else if(input->tok == OR)
+        return(exec_and(input));
     // else if(input->tok == OR)
     //     return(exec_or(input));
     // else if(input->tok == PIPE)
@@ -13,6 +13,14 @@ void ft_execute(s_input *input)
     if(input->tok == STR)
         return(exec_str(input));
         
+}
+
+void exec_and(s_input *input)
+{
+    printf("%d", global.exited);
+    ft_execute(input->left);
+    if(global.exited == 0)
+        ft_execute(input->right);
 }
 void    fill_between_quote_1(char **str, char *s, int *i)
 {
@@ -99,32 +107,33 @@ void   fill_between_quote_2(char **str, char *s, int *i)
 		*(*str) = '\0';
 	}
 }
-char *parsing_redirection(s_redir *redir, char *str ,int *flag)
-{
-    int j;
-    char *command;
-    int i;
+// char *parsing_redirection(s_redir *redir, char *str ,int *flag)
+// {
+//     int j;
+//     char *command;
+//     int i;
 
-    i = 0;
-    if(redir->tok != HEREDOC)
-    {
-        j = find_len(str); 
-        if (j < 0)
-            return (NULL);
-        command = malloc(sizeof(char) * (j + 1));
-        if (!command)
-            return (NULL);
-        ft_change_command(command, str);
-    }
-}
+//     i = 0;
+//     if(redir->tok != HEREDOC)
+//     {
+//         j = find_len(str); 
+//         if (j < 0)
+//             return (NULL);
+//         command = malloc(sizeof(char) * (j + 1));
+//         if (!command)
+//             return (NULL);
+//         ft_change_command(command, str);
+//     }
+// }
 
 void exec_str(s_input *input)
 {
     int status;
     char *path;
 
-    if (!expand(input))
-        return;
+    input->cmd = parsing_cmd(input->command);
+    if(!input->cmd)
+        return ;
 	if (input->cmd && !input->cmd[0])
 		(free(input->cmd), input->cmd = NULL);
 	if (input->cmd && input->cmd[0] && !builtins(input->cmd))
@@ -143,23 +152,23 @@ int    expand(s_input *input)
     if(!input->cmd)
         return(0);
     input->command = NULL;
-    redir = input->redirections;
-    if(redir)
-    {
-        while(redir)
-        {
-            redir->file = parsing_redirection(redir, redir->file, &flag);
-            if (!redir->file[0])
-            {
-				ft_putstr_fd("bash: ambiguous redirect\n", 2);
-				global.exited = 0;
-            }
-			if (!redir->file)
-				return (0);
-			redir->flag = flag;
-			redir = redir->right;
-        }
-    }
+    // redir = input->redirections;
+    // if(redir)
+    // {
+    //     while(redir)
+    //     {
+    //         redir->file = parsing_redirection(redir, redir->file, &flag);
+    //         if (!redir->file[0])
+    //         {
+	// 			ft_putstr_fd("bash: ambiguous redirect\n", 2);
+	// 			global.exited = 0;
+    //         }
+	// 		if (!redir->file)
+	// 			return (0);
+	// 		redir->flag = flag;
+	// 		redir = redir->right;
+    //     }
+    // }
     return(1);
 }
 
@@ -173,23 +182,22 @@ int is_legit(int c)
         return 0;
 }
 
-char *ft_getenv(char *s)
-{
-    int i;
-    s_env *env;
+// char *ft_getenv(char *s)
+// {
+//     int i;
 
-    if(!global.env || !s)
-        return(NULL);
-    i = 0;
-    env = global.env;
-    while(env)
-    {
-        if(!ft_memcmp(s, env->var, ft_strlen(s) + 1))
-            return(env->value);
-        env = global.env;
-    }
-    return(NULL);
-}
+//     if(!global.env || !s)
+//         return(NULL);
+//     i = 0;
+//     env = global.env;
+//     while(env)
+//     {
+//         if(!ft_memcmp(s, env->var, ft_strlen(s) + 1))
+//             return(env->value);
+//         env = global.env;
+//     }
+//     return(NULL);
+// }
 
 char *expand_var(char *str, int *i)
 {
@@ -207,13 +215,13 @@ char *expand_var(char *str, int *i)
         save++;
     save -= *i;
     s = ft_substr(str, *i, save);
-    v = ft_getenv(s);
+    // v = ft_getenv(s);
     *i += save;
-    if (!v)
-    {
-        free(s);
-        return (NULL);
-    }
+    // if (!v)
+    // {
+    //     free(s);
+    //     return (NULL);
+    // }
     free(s);
     return (v);
 }
