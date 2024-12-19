@@ -26,6 +26,7 @@ int main(int argc, char **argv, char **env)
         // exit(1);
         if(input == NULL)
             exit(1);
+        printf("tok = %d\n", input->tok);
         ft_execute(input);
         global.executed = 0;
     }

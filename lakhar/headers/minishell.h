@@ -72,6 +72,12 @@ extern s_global global;
 
 
 
+char **parsing_cmd(char *str);
+void	delete_quotes(char **args);
+char	*new_cmd(char *s, int *flg);
+int	calc_len(char *s);
+void	should_expnd(int *flg);
+
 
 void exec_and(s_input *input);
 void    ft_initialize(char **env, int *fd_input, int *fd_output);

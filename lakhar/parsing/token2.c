@@ -31,7 +31,9 @@ int	check_syntax(s_token tok, char *s)
 	s_token	check;
 
 	check = return_token(*s, *(s + 1));
-	if (check_syntax_help(tok, check))
+	// printf("%d\n", check);
+	// printf("%c ---> %c ----> %c\n", *(s--), *s, *(s + 1));
+	if (check_syntax_help(tok, check) == 1)
 		return (1);
 	if (check == END)
 	{

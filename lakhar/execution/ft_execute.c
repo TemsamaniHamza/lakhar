@@ -305,6 +305,77 @@ char **parsing_cmd(char *str)
     if(!cmd)
         return(NULL);
     return_cmd = fill_command(str, len, &i, 0);
-    i = 0;
+    delete_quotes(return_cmd);
     return(return_cmd);
+}
+
+void	delete_quotes(char **args)
+{
+	char	*str;
+    
+	while (*args)
+	{
+		str = new_cmd(*args, NULL);
+		*args = str;
+		args++;
+	}
+}
+
+char	*new_cmd(char *s, int *flg)
+{
+	char	*new;
+	char	*save;
+	int	l;
+	char	keep;
+
+	new = malloc(sizeof(char) * (calc_len(s) + 1));
+	if (!new)
+		exit(1);
+	l = 0;
+	save = s;
+	while (*s)
+	{
+		if (*s == 34 || *s == 39)
+		{
+			keep = *s++;
+			should_expnd(flg);
+			while (*s != keep)
+				new[l++] = *s++;
+			s++;
+			continue ;
+		}
+		new[l++] = *s++;
+	}
+	return (new[l] = '\0', free(save), new);
+}
+
+int	calc_len(char *s)
+{
+	int	    l;
+	int	    save;
+	char	keep;
+
+	l = 0;
+	while (*s)
+	{
+		if (*s == 34 || *s == 39)
+		{
+			keep = *s;
+			save = check_next_quote(s++, keep);
+			s += save + 1;
+			l += save;
+		}
+        else
+        {
+		    s++;
+		    l++;
+        }
+	}
+	return (l);
+}
+
+void	should_expnd(int *flg)
+{
+	if (flg)
+		*flg = 0;
 }
