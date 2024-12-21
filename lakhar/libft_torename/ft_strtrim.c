@@ -52,6 +52,8 @@ char	*ft_strtrim(char const *s1, char const *set)
 	size_t	len;
 	char	*ptr;
 
+	if (!s1 || !set)
+		return (NULL);
 	len = get_last_position(s1, set) - get_first_position(s1, set);
 	ptr = ft_substr(s1, get_first_position(s1, set), len);
 	return (ptr);

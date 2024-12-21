@@ -22,11 +22,14 @@ int main(int argc, char **argv, char **env)
         global.executed = 1;
         add_history(rl);
         input = ft_parse(rl);
-        // printf("%d\n", input->tok);
-        // exit(1);
+        printf("%d\n", input->redirections->tok);
+        printf("%d\n", input->redirections->right->tok);
         if(input == NULL)
-            exit(1);
-        printf("tok = %d\n", input->tok);
+	    {
+	    	// printf("failes\n");
+	    	exit(1);
+	    }
+        // printf("tok = %d\n", input->tok);
         ft_execute(input);
         global.executed = 0;
     }

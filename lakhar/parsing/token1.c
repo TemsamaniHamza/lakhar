@@ -104,7 +104,7 @@ int return_token_syntax(int tok,char *s, int *i,  int *par)
     }
 	while (check_spaces(s[*i]) == 1)
 		(*i)++;
-    if(check_syntax_error(tok, &s[*i]) == 0)
+    if(!check_syntax_error(tok, &s[*i]))
         return(0);
     return(1);
 }
@@ -114,7 +114,10 @@ s_input	*creat_node_command(char *s, s_redir *redir, s_token tok, int token_flag
 
 	node = malloc(sizeof(s_input));
 	if (!node)
+	{
+		printf("failes\n");
 		exit(1);
+	}
 	node->command = s;
 	node->cmd = NULL;
 	node->tok = tok;
@@ -158,7 +161,7 @@ int token_1(s_input **head, char *s, int *i, int *par)
     s_token tok;
     s_input *new;
 
-    tok = return_token(s[*i], s[*i + 1]);
+    tok = return_token(s[*i], s[(*i) + 1]);
     if(check_not_operator(tok) == 0)
     {
         if(return_token_syntax(tok,s,i,par) == 0)

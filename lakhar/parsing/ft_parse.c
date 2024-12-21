@@ -26,7 +26,7 @@ s_input	*tokenizer(char *str)
 	while (str[i])
 	{
 		if (!token_1(&input, str, &i, &parenthes))
-			return (free(str), NULL); // free input
+			return (free(str), NULL); 
 	}
     free(str);
     str = NULL;

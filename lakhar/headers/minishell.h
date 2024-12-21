@@ -112,7 +112,7 @@ int	check_command(s_token tok);
 void	incre(char *s, int *i);
 int str_len(char *s, int i, int flag);
 int	choose_str(char c, int flag);
-char **prep_cmd(char *s, int *i, s_token tok, int flag);
+char **prep_cmd(char *s, int *i, int flag, s_token tok);
 char **fill_command(char *s, int l, int *k, int flag);
 char	*cmd_help(char *s, int l, int *k, int flag);
 void check_flag(int flag, char *s, int *k);

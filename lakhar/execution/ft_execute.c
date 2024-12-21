@@ -4,7 +4,7 @@ void ft_execute(s_input *input)
 {
     if(!input)
         return;
-    else if(input->tok == OR)
+    else if(input->tok == AND)
         return(exec_and(input));
     // else if(input->tok == OR)
     //     return(exec_or(input));
@@ -19,7 +19,7 @@ void exec_and(s_input *input)
 {
     // printf("%d", input->tok);
     ft_execute(input->left);
-    if(global.exited == 0)
+    // if(global.exited == 0)
         ft_execute(input->right);
 }
 void    fill_between_quote_1(char **str, char *s, int *i)
@@ -330,7 +330,10 @@ char	*new_cmd(char *s, int *flg)
 
 	new = malloc(sizeof(char) * (calc_len(s) + 1));
 	if (!new)
+	{
+		printf("failes\n");
 		exit(1);
+	}
 	l = 0;
 	save = s;
 	while (*s)

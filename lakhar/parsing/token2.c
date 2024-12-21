@@ -30,7 +30,11 @@ int	check_syntax(s_token tok, char *s)
 {
 	s_token	check;
 
+	// printf(" %s\n", s);
+	// printf("[%c] and [%c]\n", *s--, *(s + 1));
+	// exit(1);
 	check = return_token(*s, *(s + 1));
+	// printf(">>>> check is %d <<<<\n", check);
 	// printf("%d\n", check);
 	// printf("%c ---> %c ----> %c\n", *(s--), *s, *(s + 1));
 	if (check_syntax_help(tok, check) == 1)
@@ -46,8 +50,12 @@ int	check_syntax(s_token tok, char *s)
 		global.exited = 258;
     }
 	else
+	{
+		// printf("%d\n", check);
 		printf("bash: syntax error near unexpected token `%c'\n", *s);
+		// exit(1);
 		global.exited = 258;;
+	}
 	return (0);
 }
 
@@ -80,7 +88,10 @@ char	*cmd_help(char *s, int l, int *k, int flag)
 
 	ret = malloc(sizeof(char) * (l + 1));
 	if (!ret)
+	{
+		printf("failes\n");
 		exit(1);
+	}
 	i = 0;
 	while (i < l)
 	{
@@ -115,7 +126,7 @@ char **fill_command(char *s, int l, int *k, int flag)
 	return (freturn);
 }
 
-char **prep_cmd(char *s, int *i, s_token tok, int flag)
+char **prep_cmd(char *s, int *i, int flag, s_token tok)
 {
 	char **freturn;
 	s[*i] = 127;
@@ -125,9 +136,10 @@ char **prep_cmd(char *s, int *i, s_token tok, int flag)
 		s[*i] = 127;
 		(*i)++;
 	}
+
 	while(check_spaces(s[*i]) == 1)
 		(*i)++;
-	if(check_syntax(tok, &s[*i]) == 0)
+	if(check_syntax(tok, (s + *i)) == 0)
 		return NULL;
 	freturn = fill_command(s, str_len(s, *i, flag), i, flag);
 	return (freturn);
@@ -184,7 +196,10 @@ s_redir	*node_create_redirection(char **s, s_token tok)
 		return (NULL);
 	node = malloc(sizeof(s_redir));
 	if (!node)
+	{
+		printf("failes\n");
 		exit(1);
+	}
 	node->tok = tok;
 	node->file = s[0];
 	node->flag = 1;
@@ -203,18 +218,19 @@ s_input	*token_2(char *s ,int *i ,s_token tok)
 	int j = 0;
 	save = *i;
 	redir = NULL;
+	// printf("%d\n", tok);
+	// exit(1);
 	while(check_true(tok) == 1)
 	{
 		if (tok != STR)
 		{
-			if(build_redir_list(&redir,node_create_redirection(prep_cmd(s, &save, 0, tok), tok)) == 0)
+			if(!build_redir_list(&redir,node_create_redirection(prep_cmd(s, &save, 0, tok), tok)))
 				return(0);
 		}
 		else
 			save++;
 		tok = return_token(s[save], s[save + 1]);
 		j++;
-		// printf("token awedi %d and j = [%d]\n",tok, j);
 	}
 	save = str_len(s, *i, 1);
 	if(save<0)
